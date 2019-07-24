@@ -113,7 +113,7 @@ public class XxlRegisterPlugin extends AbstractMojo {
 
 
     String findGroupInfo = "select * from xxl_job_qrtz_trigger_group where app_name=?";
-    String insertGroupInfo = "insert into xxl_job_qrtz_trigger_group(id,app_name,title,order) values(?,?,?,?)";
+    String insertGroupInfo = "insert into xxl_job_qrtz_trigger_group(id,app_name,title,`order`) values(?,?,?,?)";
     //获取刚插入的自增长id的值
     String findMaxId = "select max(id) from xxl_job_qrtz_trigger_group";
     private int processGroupInfo(Connection conn) throws SQLException {
@@ -130,7 +130,7 @@ public class XxlRegisterPlugin extends AbstractMojo {
             ipstmt.setInt(1,id);
             ipstmt.setString(2,appName);
             if(StringUtils.isBlank(appTitle))
-                appTitle = appName;
+                appTitle = appName.substring(0,appName.length()>12?11:appName.length()-1);
             ipstmt.setString(3,appTitle);
             ipstmt.setInt(4,id);
             ipstmt.execute();
@@ -142,7 +142,7 @@ public class XxlRegisterPlugin extends AbstractMojo {
         PreparedStatement pstmt = conn.prepareStatement(findMaxId);
         ResultSet rs = pstmt.executeQuery();
         if(rs.next()){
-            int id = rs.getInt("id");
+            int id = rs.getInt(1);
             return id;
         }else {
             return 0;
