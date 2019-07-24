@@ -64,8 +64,8 @@ public class XxlRegisterPlugin extends AbstractMojo {
     }
 
     String findByBeanName = "select * from xxl_job_qrtz_trigger_info where executor_handler=? and job_group=?";
-    String insertJobInfo = "insert into xxl_job_qrtz_trigger_info(job_group,job_cron,job_desc,author,alarm_email,executor_route_strategy,executor_handler,executor_block_strategy,executor_timeout,executor_fail_retry_count,glue_type)" +
-            " values(?,?,?,?,?,?,?,?,?,?,?)";
+    String insertJobInfo = "insert into xxl_job_qrtz_trigger_info(job_group,job_cron,job_desc,author,alarm_email,executor_route_strategy,executor_handler,executor_block_strategy,executor_timeout,executor_fail_retry_count,glue_type,glue_updatetime)" +
+            " values(?,?,?,?,?,?,?,?,?,?,?,now())";
     String updateJobInfo = "update xxl_job_qrtz_trigger_info set job_cron=?,executor_route_strategy=?,executor_block_strategy=?,executor_timeout=?,executor_fail_retry_count=? where id=?";
 
     private void processJobInfo(Class clz, Connection conn, int groupId) throws SQLException {
@@ -101,7 +101,10 @@ public class XxlRegisterPlugin extends AbstractMojo {
             PreparedStatement ipstmt = conn.prepareStatement(insertJobInfo);
             ipstmt.setInt(1,groupId);
             ipstmt.setString(2,jobInfo.cron());
-            ipstmt.setString(3,jobInfo.desc());
+            String desc = jobInfo.desc();
+            if(StringUtils.isBlank(desc))
+                desc = beanName;
+            ipstmt.setString(3,desc);
             ipstmt.setString(4,jobInfo.author());
             ipstmt.setString(5,jobInfo.alarmEmail());
             ipstmt.setString(6,jobInfo.executorRouteStrategy().name());
