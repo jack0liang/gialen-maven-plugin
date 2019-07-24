@@ -87,7 +87,7 @@ public class XxlRegisterPlugin extends AbstractMojo {
             if(id<=0)
                 return ;
             PreparedStatement ipstmt = conn.prepareStatement(updateJobInfo);
-            ipstmt.setString(1,jobInfo.jobCron());
+            ipstmt.setString(1,jobInfo.cron());
             ipstmt.setString(2,jobInfo.executorRouteStrategy().name());
             ipstmt.setString(3,jobInfo.executorBlockStrategy().name());
             ipstmt.setInt(4,jobInfo.executorTimeout());
@@ -97,8 +97,8 @@ public class XxlRegisterPlugin extends AbstractMojo {
         }else {
             PreparedStatement ipstmt = conn.prepareStatement(insertJobInfo);
             ipstmt.setInt(1,groupId);
-            ipstmt.setString(2,jobInfo.jobCron());
-            ipstmt.setString(3,jobInfo.jobDesc());
+            ipstmt.setString(2,jobInfo.cron());
+            ipstmt.setString(3,jobInfo.desc());
             ipstmt.setString(4,jobInfo.author());
             ipstmt.setString(5,jobInfo.alarmEmail());
             ipstmt.setString(6,jobInfo.executorRouteStrategy().name());
