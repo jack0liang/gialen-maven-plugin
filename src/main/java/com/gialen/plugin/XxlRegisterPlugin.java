@@ -63,10 +63,10 @@ public class XxlRegisterPlugin extends AbstractMojo {
         }
     }
 
-    String findByBeanName = "select * from xxl_job_qrtz_triggers_info where executor_handler=? and job_group=?";
-    String insertJobInfo = "insert into xxl_job_qrtz_triggers_info(job_group,job_cron,job_desc,author,alarm_email,executor_route_strategy,executor_handler,executor_block_strategy,executor_timeout,executor_fail_retry_count,glue_type)" +
+    String findByBeanName = "select * from xxl_job_qrtz_trigger_info where executor_handler=? and job_group=?";
+    String insertJobInfo = "insert into xxl_job_qrtz_trigger_info(job_group,job_cron,job_desc,author,alarm_email,executor_route_strategy,executor_handler,executor_block_strategy,executor_timeout,executor_fail_retry_count,glue_type)" +
             " values(?,?,?,?,?,?,?,?,?,?,?)";
-    String updateJobInfo = "update xxl_job_qrtz_triggers_info set job_cron=?,executor_route_strategy=?,executor_block_strategy=?,executor_timeout=?,executor_fail_retry_count=? where id=?";
+    String updateJobInfo = "update xxl_job_qrtz_trigger_info set job_cron=?,executor_route_strategy=?,executor_block_strategy=?,executor_timeout=?,executor_fail_retry_count=? where id=?";
 
     private void processJobInfo(Class clz, Connection conn, int groupId) throws SQLException {
         JobHandler jobHandler = (JobHandler) clz.getAnnotation(JobHandler.class);
@@ -112,10 +112,10 @@ public class XxlRegisterPlugin extends AbstractMojo {
     }
 
 
-    String findGroupInfo = "select * from xxl_job_qrtz_triggers_group where app_name=?";
-    String insertGroupInfo = "insert into xxl_job_qrtz_triggers_group(id,app_name,title,order) values(?,?,?,?)";
+    String findGroupInfo = "select * from xxl_job_qrtz_trigger_group where app_name=?";
+    String insertGroupInfo = "insert into xxl_job_qrtz_trigger_group(id,app_name,title,order) values(?,?,?,?)";
     //获取刚插入的自增长id的值
-    String findMaxId = "select max(id) from xxl_job_qrtz_triggers_group";
+    String findMaxId = "select max(id) from xxl_job_qrtz_trigger_group";
     private int processGroupInfo(Connection conn) throws SQLException {
         PreparedStatement pstmt = conn.prepareStatement(findGroupInfo);
         pstmt.setString(1,appName);
