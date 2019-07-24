@@ -69,6 +69,7 @@ public class XxlRegisterPlugin extends AbstractMojo {
     String updateJobInfo = "update xxl_job_qrtz_trigger_info set job_cron=?,executor_route_strategy=?,executor_block_strategy=?,executor_timeout=?,executor_fail_retry_count=? where id=?";
 
     private void processJobInfo(Class clz, Connection conn, int groupId) throws SQLException {
+        getLog().info("process class:"+clz.getName());
         JobHandler jobHandler = (JobHandler) clz.getAnnotation(JobHandler.class);
         if(jobHandler==null)
             return ;
@@ -83,6 +84,7 @@ public class XxlRegisterPlugin extends AbstractMojo {
         pstmt.setInt(2,groupId);
         ResultSet rs = pstmt.executeQuery();
         if(rs.next()){
+            getLog().info("update job["+beanName+"]");
             int id = rs.getInt("id");
             if(id<=0)
                 return ;
@@ -95,6 +97,7 @@ public class XxlRegisterPlugin extends AbstractMojo {
             ipstmt.setInt(6,id);
             ipstmt.execute();
         }else {
+            getLog().info("add job["+beanName+"]");
             PreparedStatement ipstmt = conn.prepareStatement(insertJobInfo);
             ipstmt.setInt(1,groupId);
             ipstmt.setString(2,jobInfo.cron());
