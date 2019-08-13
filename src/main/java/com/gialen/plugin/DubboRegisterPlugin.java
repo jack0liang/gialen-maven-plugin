@@ -133,7 +133,7 @@ public class DubboRegisterPlugin extends AbstractMojo {
             boolean isDelete = false;
             for (int i = 0; i < parameters.length; i++) {
                 java.lang.reflect.Parameter parameter = parameters[i];
-                if (parameter.getType().getName().equals(paramTypeList.get(i))) {
+                if (!parameter.getType().getName().equals(paramTypeList.get(i))) {
                     isDelete = true;
                     break;
                 }
